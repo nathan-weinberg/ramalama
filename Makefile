@@ -8,6 +8,7 @@ PYTHON ?= $(shell command -v python3 python|head -n1)
 DESTDIR ?= /
 PATH := $(PATH):$(HOME)/.local/bin
 IMAGE ?= ramalama
+DNF := $(shell command -v dnf 2>/dev/null)
 
 default: help
 
@@ -136,6 +137,9 @@ test-run:
 .PHONY: validate
 validate: codespell lint check-format
 ifeq ($(OS),Linux)
+	ifeq ($(DNF),)
+		sudo dnf install perl -y
+	endif
 	hack/man-page-checker
 	hack/xref-helpmsgs-manpages
 endif
