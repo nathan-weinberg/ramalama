@@ -8,6 +8,7 @@ PYTHON ?= $(shell command -v python3 python|head -n1)
 DESTDIR ?= /
 PATH := $(PATH):$(HOME)/.local/bin
 IMAGE ?= ramalama
+DNF := $(shell command -v dnf 2>/dev/null)
 
 default: help
 
@@ -64,6 +65,9 @@ install-requirements:
 			isort~=6.0 \
 			pytest~=8.3 \
 			wheel~=0.45.0
+ifeq ($(DNF),)
+    sudo dnf install perl -y
+endif
 
 .PHONY: install-completions
 install-completions: completions
